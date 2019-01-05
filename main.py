@@ -16,17 +16,14 @@ chanTG = configTg.chanTG
 chanFB = configFb.chanFB
 
 class TgBot(Client):
-  def onMessage(self,mid, author_id, message, message_object, thread_id, thread_type, ts, metadata, msg):
-      if thread_id not in chan:
-          data = client.fetchThreadInfo(thread_id)[thread_id]
-          chan[thread_id] = data.name
-      author = self.fetchUserInfo(author_id)[author_id]
-      if thread_id not in chanTG:
-        bot.sendMessage(config.idTg,'Message provenant du chan: ' + str(chan[thread_id]))
-        bot.sendMessage(config.idTg,'<' + author.name + '>: ' + message)
-        bot.sendMessage(config.idTg,'Créez un nouveau groupe avec /init ' + str(thread_id) +' <type>')
-        bot.sendMessage(config.idTg,'<type> vaut USER,PAGE,ROOM,GROUP')
-      elif author_id == config.idFb:
+    def onMessage(self,mid, author_id, message, message_object, thread_id, thread_type, ts, metadata, msg):
+        author = self.fetchUserInfo(author_id)[author_id]
+        if thread_id not in chanTG:
+            bot.sendMessage(config.idTg,'Message provenant du chan: ' + str(chan[thread_id]))
+            bot.sendMessage(config.idTg,'<' + author.name + '>: ' + message)
+            bot.sendMessage(config.idTg,'Créez un nouveau groupe avec /init ' + str(thread_id) +' <type>')
+            bot.sendMessage(config.idTg,'<type> vaut USER,PAGE,ROOM,GROUP')
+        elif author_id is not config.idFb:
           bot.sendMessage(chanTG[thread_id],'<' + author.name + '>: ' + message)
 
 client = TgBot(config.login, config.password)
